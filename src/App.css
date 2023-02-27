@@ -1,5 +1,53 @@
 .App {
   text-align: center;
+  display: flex;
+  background-color: #282c34;
+  color: white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidemenu {
+  width: 260px;
+  padding: 10px;
+  background-color: #202123;
+}
+
+.sidemenu-button {
+  padding: 12px;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-align: left;
+  transition: ease 0.25s all;
+}
+
+.sidemenu-button:hover {
+  background: rgba(255, 255, 255, 0.1)
+}
+
+/* Below rules are used to align and adjust the SVG + sign */
+
+.h-4 {
+  height: 1rem;
+}
+
+.w-4 {
+  width: 1rem;
+}
+
+.h-4,
+.w-4 {
+  vertical-align: middle;
+}
+
+/* Above rules are used to align and adjust the SVG + sign */
+
+.chat-section {
+  flex: 1;
+  background-color: #343541;
 }
 
 .App-logo {
@@ -32,6 +80,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
