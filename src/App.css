@@ -48,6 +48,7 @@
 .chat-section {
   flex: 1;
   background-color: #343541;
+  position: relative;
 }
 
 .App-logo {
@@ -59,6 +60,27 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.input-holder {
+  padding: 24px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.input-textarea {
+  background-color: #40414f;
+  width: 50%;
+  border-radius: 5px;
+  border: none;
+  margin: 12px;
+  outline: none;
+  padding: 12px;
+  color: whitesmoke;
+  font-size: 1.25em;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0 0.5, 0.5);
 }
 
 .App-header {
