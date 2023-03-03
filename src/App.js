@@ -2,23 +2,37 @@ import logo from './logo.svg';
 import './normal.css';
 import './App.css';
 
-function App() {
+import { useState } from 'react';
+
+const App = () => {
+
+  const [input, setInput] = useState("");
+  const [chatlog, setChatLog] = useState([]);
+
+  // console.log("here");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('submit');
+  }
+
+
+
   return (
     <div className="App">
       <aside className="sidemenu">
         <div className="sidemenu-button">
-          <svg class="h-4 w-4" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" >
-            <line x1="0" y1="6" x2="12" y2="6" stroke="currentColor" fill="none" stroke-width="2" />
-            <line x1="6" y1="0" x2="6" y2="12" stroke="currentColor" fill="none" stroke-width="2" />
+          <svg className="h-4 w-4" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="6" x2="12" y2="6" stroke="currentColor" fill="none" strokeWidth="2" />
+            <line x1="6" y1="0" x2="6" y2="12" stroke="currentColor" fill="none" strokeWidth="2" />
           </svg>
 
           New Chat
         </div>
       </aside>
-      <section class="chat-section">
+      <section className="chat-section">
         <div className="chat-log">
           <div className="chat-message">
-            <div class="chat-message-center">
+            <div className="chat-message-center">
               <div className="avatar">
 
               </div>
@@ -28,7 +42,7 @@ function App() {
             </div>
           </div>
           <div className="chat-message chatgpt">
-            <div class="chat-message-center">
+            <div className="chat-message-center">
               <div className="avatar chatgpt">
                 <svg
                   width={41}
@@ -43,6 +57,7 @@ function App() {
                     fill="currentColor"
                   />
                 </svg>
+
               </div>
               <div className="message">
                 Im AI
@@ -50,11 +65,17 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="input-holder">
-          <textarea rows="1" className="input-textarea" placeholder="Say Hello...">
+        <form onSubmit={handleSubmit}>
+          <div className="input-holder">
+            <input rows="1"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="input-textarea"
+              placeholder="Say Hello...">
 
-          </textarea>
-        </div>
+            </input>
+          </div>
+        </form>
       </section>
     </div>
   );
