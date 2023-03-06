@@ -23,7 +23,19 @@ const App = () => {
     setChatLog([...chatLog, { user: 'me', message: `${input}` }])
 
     setInput("");
-    // console.log('submit');
+
+    const response = await fetch("http://localhost:3080/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: chatLog.map(message => message.message).join("")
+      })
+    });
+    const data = await response.json();
+    setChatLog([...chatLog, { user: 'gpt', message: `${data.message}` }])
+    console.log(data.message);
   }
 
 
