@@ -36,11 +36,22 @@ const App = () => {
     fetch("http://localhost:3080/models")
       .then(res => res.json())
       .then(data => {
-        console.log(data.models.data);
-        setModels(data.models.data);
+        // console.log(data.models.data);
+        setModels(data.models);
+        console.log(data.models);
       })
-      .catch(err => console.error(err));
-  };
+    // .catch(err => console.error(err));
+  }
+
+  // const getEngines = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:3080/models");
+  //     const data = await response.json();
+  //     setModels(data.models);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
 
   // Debug code
@@ -102,7 +113,7 @@ const App = () => {
         <div className="models">
 
           <select>
-            {models.map((model) => {
+            {models.map(model => {
               return <option key={model.id} value={model.id}>{model.id}</option>
             })}
           </select>
