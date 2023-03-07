@@ -2,11 +2,21 @@ import logo from './logo.svg';
 import './normal.css';
 import './App.css';
 
-import { useState } from 'react';
+// const { port } = require('./index');
+import { port } from './index.js'
+
+
+import { useState, useEffect } from 'react';
+
 
 const App = () => {
 
+  useEffect(() => {
+    getEngines();
+  }, [])
+
   const [input, setInput] = useState("");
+  const [models, setModels] = useState([]);
   const [chatLog, setChatLog] = useState([{
     user: "gpt",
     message: "How can I help you?"
@@ -16,13 +26,51 @@ const App = () => {
     message: "I want to have some coffee?"
 
   }]);
+  // clear chats
+
+  const clearChat = () => {
+    setChatLog([]);
+  }
+
+  const getEngines = () => {
+    fetch("http://localhost:3080/models")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.models.data);
+        setModels(data.models.data);
+      })
+      .catch(err => console.error(err));
+  };
+
+
+  // Debug code
+  // const getEngines = () => {
+  //   console.log("Fetching engines...");
+  //   fetch("http://localhost:3080/models")
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log("Got data:", data);
+  //       setModels(data.models.data);
+  //       console.log("Models set:", models);
+  //     })
+  //     .catch(err => console.error(err));
+  // };
+
+
+  // Debug code
 
   // console.log("here");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setChatLog([...chatLog, { user: 'me', message: `${input}` }])
+
+    let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
+    // setChatLog([...chatLog, { user: 'me', message: `${input}` }])
 
     setInput("");
+
+    setChatLog(chatLogNew);
+
+    const messages = chatLogNew.map(message => message.message).join("\n")
 
     const response = await fetch("http://localhost:3080/", {
       method: "POST",
@@ -30,11 +78,11 @@ const App = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: chatLog.map(message => message.message).join("")
+        message: messages                       //chatLog.map(message => message.message).join("")
       })
     });
     const data = await response.json();
-    setChatLog([...chatLog, { user: 'gpt', message: `${data.message}` }])
+    setChatLog([...chatLogNew, { user: 'gpt', message: `${data.message}` }])
     console.log(data.message);
   }
 
@@ -43,7 +91,7 @@ const App = () => {
   return (
     <div className="App">
       <aside className="sidemenu">
-        <div className="sidemenu-button">
+        <div className="sidemenu-button" onClick={clearChat}>
           <svg className="h-4 w-4" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
             <line x1="0" y1="6" x2="12" y2="6" stroke="currentColor" fill="none" strokeWidth="2" />
             <line x1="6" y1="0" x2="6" y2="12" stroke="currentColor" fill="none" strokeWidth="2" />
@@ -51,6 +99,16 @@ const App = () => {
 
           New Chat
         </div>
+        <div className="models">
+
+          <select>
+            {models.map((model) => {
+              return <option key={model.id} value={model.id}>{model.id}</option>
+            })}
+          </select>
+
+        </div>
+
       </aside>
       <section className="chat-section">
         <div className="chat-log">
