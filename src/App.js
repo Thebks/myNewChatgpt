@@ -17,6 +17,7 @@ const App = () => {
 
   const [input, setInput] = useState("");
   const [models, setModels] = useState([]);
+  const [currentModel, setCurrentModel] = useState("ada");
   const [chatLog, setChatLog] = useState([{
     user: "gpt",
     message: "How can I help you?"
@@ -32,26 +33,26 @@ const App = () => {
     setChatLog([]);
   }
 
-  const getEngines = () => {
-    fetch("http://localhost:3080/models")
-      .then(res => res.json())
-      .then(data => {
-        // console.log(data.models.data);
-        setModels(data.models);
-        console.log(data.models);
-      })
-    // .catch(err => console.error(err));
-  }
+  // const getEngines = () => {
+  //   fetch("http://localhost:3080/models")
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       // console.log(data.models.data);
+  //       setModels(data.models);
+  //       console.log(data.models);
+  //     })
+  //   // .catch(err => console.error(err));
+  // }
 
-  // const getEngines = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:3080/models");
-  //     const data = await response.json();
-  //     setModels(data.models);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const getEngines = async () => {
+    try {
+      const response = await fetch("http://localhost:3080/models");
+      const data = await response.json();
+      setModels(data.models);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
   // Debug code
@@ -89,7 +90,7 @@ const App = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: messages                       //chatLog.map(message => message.message).join("")
+        message: messages, currentModel                       //chatLog.map(message => message.message).join("")
       })
     });
     const data = await response.json();
@@ -112,7 +113,7 @@ const App = () => {
         </div>
         <div className="models">
 
-          <select>
+          <select onChange={(e) => { setCurrentModel(e.target.value) }}>
             {models.map(model => {
               return <option key={model.id} value={model.id}>{model.id}</option>
             })}
