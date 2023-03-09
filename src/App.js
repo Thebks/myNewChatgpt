@@ -2,8 +2,6 @@ import logo from './logo.svg';
 import './normal.css';
 import './App.css';
 
-// const { port } = require('./index');
-import { port } from './index.js'
 
 
 import { useState, useEffect } from 'react';
@@ -15,34 +13,35 @@ const App = () => {
     getEngines();
   }, [])
 
+  useEffect(() => {
+    clearChat();
+  }, [])
+
+
   const [input, setInput] = useState("");
   const [models, setModels] = useState([]);
   const [currentModel, setCurrentModel] = useState("ada");
-  const [chatLog, setChatLog] = useState([{
-    user: "gpt",
-    message: "How can I help you?"
-  }, {
+  // const [chatLog, setChatLog] = useState([{
+  //   user: "gpt",
+  //   message: "How can I help you?"
+  // }, {
 
-    user: "me",
-    message: "I want to have some coffee?"
+  //   user: "me",
+  //   message: "I want to have some coffee?"
 
-  }]);
+  // }]);
   // clear chats
+
+  // TEST CODE 2.0
+
+  const [chatLog, setChatLog] = useState([{}]);
+
+  // TEST CODE 2.0
 
   const clearChat = () => {
     setChatLog([]);
   }
 
-  // const getEngines = () => {
-  //   fetch("http://localhost:3080/models")
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       // console.log(data.models.data);
-  //       setModels(data.models);
-  //       console.log(data.models);
-  //     })
-  //   // .catch(err => console.error(err));
-  // }
 
   const getEngines = async () => {
     try {
@@ -55,48 +54,66 @@ const App = () => {
   };
 
 
-  // Debug code
-  // const getEngines = () => {
-  //   console.log("Fetching engines...");
-  //   fetch("http://localhost:3080/models")
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log("Got data:", data);
-  //       setModels(data.models.data);
-  //       console.log("Models set:", models);
+
+  // TEST CODE 2.0
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
+
+  //   setInput("");
+
+  //   setChatLog(chatLogNew);
+
+  //   const messages = chatLogNew.map(message => message.message).join("\n")
+
+  //   const response = await fetch("http://localhost:3080/", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({
+  //       message: messages, currentModel                       //chatLog.map(message => message.message).join("")
   //     })
-  //     .catch(err => console.error(err));
-  // };
+  //   });
+  //   const data = await response.json();
+  //   setChatLog([...chatLogNew, { user: 'gpt', message: `${data.message}` }])
+  //   console.log(data.message);
+  // }
 
+  // TEST CODE 2.0
 
-  // Debug code
-
-  // console.log("here");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
-    // setChatLog([...chatLog, { user: 'me', message: `${input}` }])
 
     setInput("");
 
     setChatLog(chatLogNew);
 
-    const messages = chatLogNew.map(message => message.message).join("\n")
+    const messages = chatLogNew.map(message => message.message).join("\n");
 
-    const response = await fetch("http://localhost:3080/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: messages, currentModel                       //chatLog.map(message => message.message).join("")
-      })
-    });
-    const data = await response.json();
-    setChatLog([...chatLogNew, { user: 'gpt', message: `${data.message}` }])
-    console.log(data.message);
-  }
+    try {
+      const response = await fetch("http://localhost:3080/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: messages, currentModel                       //chatLog.map(message => message.message).join("")
+        })
+      });
+      const data = await response.json();
+      setChatLog([...chatLogNew, { user: 'gpt', message: `${data.message}` }])
+      console.log(data.message);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
 
 
 
