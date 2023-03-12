@@ -1,40 +1,43 @@
 import logo from './logo.svg';
 import './normal.css';
 import './App.css';
-import { ChatMessage } from './components';
 
+import { ChatMessage } from './components';
 
 import { useState, useEffect } from 'react';
 
 
 const App = () => {
 
-  useEffect(() => {
-    getEngines();
+
+  useEffect(() => {               // This useEffect below clears chat.
+    clearChat();
   }, [])
 
-  useEffect(() => {
-    clearChat();
+
+
+  useEffect(() => {                                  // This useEffect fetches models from the OpenAI and adds it to the select models tag.
+    const fetchModels = async () => {
+      try {
+        const response = await fetch("http://localhost:3080/models");
+        const data = await response.json();
+        setModels(data.models);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchModels();
   }, [])
 
 
   const [input, setInput] = useState("");
   const [models, setModels] = useState([]);
   const [currentModel, setCurrentModel] = useState("ada");
-  // const [chatLog, setChatLog] = useState([{
-  //   user: "gpt",
-  //   message: "How can I help you?"
-  // }, {
+  const [chatLog, setChatLog] = useState([{}]);
 
-  //   user: "me",
-  //   message: "I want to have some coffee?"
-
-  // }]);
-  // clear chats
 
   // TEST CODE 2.0
 
-  const [chatLog, setChatLog] = useState([{}]);
 
   // TEST CODE 2.0
 
@@ -43,48 +46,8 @@ const App = () => {
   }
 
 
-  const getEngines = async () => {
-    try {
-      const response = await fetch("http://localhost:3080/models");
-      const data = await response.json();
-      setModels(data.models);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
-
-  // TEST CODE 2.0
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
-
-  //   setInput("");
-
-  //   setChatLog(chatLogNew);
-
-  //   const messages = chatLogNew.map(message => message.message).join("\n")
-
-  //   const response = await fetch("http://localhost:3080/", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify({
-  //       message: messages, currentModel                       //chatLog.map(message => message.message).join("")
-  //     })
-  //   });
-  //   const data = await response.json();
-  //   setChatLog([...chatLogNew, { user: 'gpt', message: `${data.message}` }])
-  //   console.log(data.message);
-  // }
-
-  // TEST CODE 2.0
-
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
@@ -130,7 +93,8 @@ const App = () => {
         </div>
         <div className="models">
 
-          <select onChange={(e) => { setCurrentModel(e.target.value) }}>
+          <select class="model-select" onChange={(e) => { setCurrentModel(e.target.value) }} required>
+            <option value="" disabled selected>Please select your engine</option>
             {models.map(model => {
               return <option key={model.id} value={model.id}>{model.id}</option>
             })}

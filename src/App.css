@@ -150,3 +150,68 @@ svg {
     transform: rotate(360deg);
   }
 }
+
+
+.models {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #202123;
+  margin-top: 10px;
+}
+
+.model-select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* .models .model-select {
+  box-sizing: border-box;
+  width: 100%;
+  appearance: none;
+  background-color: #202123;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-align: left;
+  transition: ease 0.25s all;
+  color: white;
+  cursor: pointer;
+
+} */
+
+.model-select:hover {
+  background: rgba(255, 255, 255, 0.1)
+}
+
+.model-select:focus {
+  outline: none;
+}
+
+.models:before {
+  content: "\25BC";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.model-select option[value=""] {
+  display: none;
+}
+
+.model-select option:first-child {
+  display: block;
+  color: #ccc;
+}
