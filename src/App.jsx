@@ -59,6 +59,8 @@ const App = () => {
 
     e.preventDefault();
 
+    // setIsLoading(true);                 // TEST LINE
+
     let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
 
     setInput("");
@@ -83,6 +85,8 @@ const App = () => {
     } catch (error) {
       console.error(error);
     }
+    // setIsLoading(false);               // TEST LINE
+
   };
 
 
@@ -102,7 +106,7 @@ const App = () => {
         </div>
         <div className="models">
 
-          <select class="model-select" onChange={(e) => { setCurrentModel(e.target.value) }} required>
+          <select className="model-select" onChange={(e) => { setCurrentModel(e.target.value) }} required>
             <option value="" disabled selected>Please select your engine</option>
             {models.map(model => {
               return <option key={model.id} value={model.id}>{model.id}</option>
