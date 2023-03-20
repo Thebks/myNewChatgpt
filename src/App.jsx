@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './normal.css';
 import './App.css';
 
-import { ChatMessage, Loader } from './components';
+import { ChatMessage } from './components';
 
 import { useState, useEffect } from 'react';
 
@@ -13,7 +13,6 @@ const App = () => {
   const [models, setModels] = useState([]);
   const [currentModel, setCurrentModel] = useState("ada");
   const [chatLog, setChatLog] = useState([{}]);
-  const [isLoading, setIsLoading] = useState(false);    // To load the loading Dots '...'  TEST CODE
 
 
   useEffect(() => {               // This useEffect clears chat.
@@ -34,21 +33,6 @@ const App = () => {
     fetchModels();
   }, []);
 
-  // TEST CODE
-  useEffect(() => {
-    loadMessages();
-  }, []);
-
-
-  const loadMessages = () => {          // this function will prock the  loading Dots to load messages 
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
-
-  // TEST CODE
 
   const clearChat = () => {                         // Clears Chat 
     setChatLog([]);
@@ -59,7 +43,6 @@ const App = () => {
 
     e.preventDefault();
 
-    // setIsLoading(true);                 // TEST LINE
 
     let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
 
@@ -85,12 +68,8 @@ const App = () => {
     } catch (error) {
       console.error(error);
     }
-    // setIsLoading(false);               // TEST LINE
 
   };
-
-
-
 
 
   return (
@@ -118,19 +97,9 @@ const App = () => {
       </aside>
       <section className="chat-section">
         <div className="chat-log">
-          {/* TEST CODE  */}
-          {isLoading ? (
-            <Loader />
-          ) : (
-            chatLog.map((message, index) => (
-              <ChatMessage key={index} message={message} />
-            ))
-          )}
-
-          {/* TEST CODE  */}
-          {/* {chatLog.map((message, index) => {
+          {chatLog.map((message, index) => {
             return <ChatMessage key={index} message={message} />
-          })} */}
+          })}
 
         </div>
         <form onSubmit={handleSubmit}>
